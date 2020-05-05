@@ -14,42 +14,35 @@ class Login extends React.Component {
         this.fetchLogin();
     };
 
-    fetchLogin = () => {
+    fetchLogin = async () => {
         const { history } = this.props;
-        fetch(`https://backend.cleverapps.io/login`, {
+        await fetch(`https://backend.cleverapps.io/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 username: this.state.username,
-                password: this.state.password
-            })
-        }).then(function(response) {
-            return response;
-        })
-            .then(function(response){
-                let blob = fetch(`https://backend.cleverapps.io/wsTicket`, {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-                if (blob.status === 200) {
-                    blob.text().then(function(ticket) {
-                            this.ws.send(ticket);
-                            this.ws.addEventListener('message', onmessage);
-                            history.push('/chat');
-                            this.props.afterLogin(true);
-                        }
-                    )
-                }
+                password: this.state.password,
+            }),
+        });
+        this.fetchTicket();
+        console.log("là ?");
+    };
 
-                console.log(response);
-            });
+    fetchTicket = async () => {
+        let blob = await fetch(`https://backend.cleverapps.io/wsTicket`, {
+            method: 'GET',
+            credentials: 'include',
+        });
+        let response = await blob.text();
+        this.props.ws.send(response);
+        this.props.ws.addEventListener('message', onmessage);
+        this.props.afterLogin(true);
     };
 
     render = () => {
-
         return (
             <form onSubmit={this.handleSubmit}>
                 <h1>Login</h1>

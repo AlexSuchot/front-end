@@ -6,21 +6,25 @@ class Chat extends Component {
     constructor(props){
         super(props);
         this.state={
-            messages:''
+            messages:[]
         };
     }
 
     componentDidMount() {
-        this.ws.onopen = () => {
+        this.props.ws.onopen = () => {
             console.log('connected');
         };
 
-        this.ws.onmessage = evt => {
-            const message = JSON.parse(evt.data);
-            this.addMessage(message)
+        this.props.ws.onmessage = evt => {
+            const message = evt.data;
+            console.log(evt.data);
+            console.log(evt);
+            console.log(message);
+            this.addMessage(message);
+            console.log(this.addMessage(message));
         };
 
-        this.ws.onclose = (event) => {
+        this.props.ws.onclose = (event) => {
             console.log(event);
             console.log('disconnected');
         }
@@ -32,7 +36,7 @@ class Chat extends Component {
     submitMessage = messageString => {
         // on submitting the ChatInput form, send the message, add it to the list and reset the input
         const message = { message: messageString };
-        this.ws.send(JSON.stringify(message));
+        this.props.ws.send(JSON.stringify(message));
         this.addMessage(message)
     };
 
@@ -40,7 +44,7 @@ class Chat extends Component {
         return (
             <div>
                 <ChatInput
-                    ws={this.ws}
+                    ws={this.props.ws}
                     onSubmitMessage={messageString => this.submitMessage(messageString)}
                 />
                 {this.state.messages.map((message, index) =>

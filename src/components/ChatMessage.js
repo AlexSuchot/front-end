@@ -1,4 +1,4 @@
 import React from 'react'
 
-export default ({ name, message }) =>
+export default ({ message }) =>
     <p><em>{message}</em></p>
