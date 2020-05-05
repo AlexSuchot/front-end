@@ -10,8 +10,12 @@ class App extends Component {
         this.state = {
             afterLogin: false,
             items: [],
-            ws: new WebSocket('ws://backend.cleverapps.io'),
+            ws: {},
         };
+    }
+
+    componentDidMount() {
+        this.setState({ws: new WebSocket('ws://backend.cleverapps.io')});
     }
 
     afterLogin = (afterLogin) => {
