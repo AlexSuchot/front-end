@@ -15,7 +15,6 @@ class Login extends React.Component {
     };
 
     fetchLogin = async () => {
-        const { history } = this.props;
         await fetch(`https://backend.cleverapps.io/login`, {
             method: 'POST',
             credentials: 'include',
@@ -28,7 +27,6 @@ class Login extends React.Component {
             }),
         });
         this.fetchTicket();
-        console.log("là ?");
     };
 
     fetchTicket = async () => {

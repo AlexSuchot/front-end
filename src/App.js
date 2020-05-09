@@ -25,7 +25,11 @@ class App extends Component {
     render() {
 
         if (this.state.afterLogin === true) {
-                return <Chat ws={this.state.ws} />;
+                return (
+                    <div className='App'>
+                        <Chat ws={this.state.ws} />
+                    </div>
+                )
         } else {
             return (
                 <div className='App'>
